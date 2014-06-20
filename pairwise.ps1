@@ -1,5 +1,6 @@
+
 $list = ("first", "second", "third")
-function pairwise($list)
+function pairwise-v1($list)
 {
     foreach ($first in $list)
     {
@@ -12,4 +13,29 @@ function pairwise($list)
         }
     }
 }
-pairwise $list
+    
+
+function pairwise-v2
+{
+    [CmdletBinding()]
+    Param(
+        [Parameter(Mandatory=$True,ValueFromPipeline=$True,ValueFromPipelinebyPropertyName=$True)] $item
+    )
+    
+    Begin
+    {
+        $list = @()
+    }
+    
+    PROCESS {        
+        $list += $_
+    }
+
+    End {
+        pairwise-v1 $list
+    }
+}
+
+
+#pairwise-v1 $list
+$list | pairwise-v2
